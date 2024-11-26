@@ -131,25 +131,27 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
-			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold)
+			// If there is mouse input, even small movements
+			if (_input.look.sqrMagnitude >= _threshold || IsCurrentDeviceMouse) // Check if we're using mouse
 			{
-				//Don't multiply mouse input by Time.deltaTime
+				// Don't multiply mouse input by Time.deltaTime for instant response
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-				
+
+				// Accumulate the mouse look input for pitch (vertical rotation) and yaw (horizontal rotation)
 				_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
 				_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
 
-				// clamp our pitch rotation
+				// Clamp pitch to the set limits to avoid excessive upward or downward camera angles
 				_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
-				// Update Cinemachine camera target pitch
+				// Update Cinemachine camera pitch (vertical rotation)
 				CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
 
-				// rotate the player left and right
+				// Rotate the player around the y-axis (left-right rotation)
 				transform.Rotate(Vector3.up * _rotationVelocity);
 			}
 		}
+
 
 		private void Move()
 		{
