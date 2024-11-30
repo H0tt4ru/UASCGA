@@ -6,10 +6,8 @@ using TMPro;
 
 public class ShootController : MonoBehaviour
 {
-    private StarterAssetsInputs _inputs;
     public Camera playerCamera;
     public float shootingRange = 100f;
-    public Texture2D[] muzzleFlash;
     public float fireRate = 0.1f; // Time between shots
     private float nextTimeToFire = 0f;
     private int shotsFired = 0;
