@@ -1,4 +1,0 @@
-repository "UASCGA/UASCGA@18968065220360@cloud"
-  path "/"
-    br "/main"
-    co "/main"
