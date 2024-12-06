@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
 
     private NavMeshAgent agent;
     private Vector3 roamTarget;
+    public GameObject resource;
 
     [Header("Shooting Settings")]
     public GameObject bulletPrefab; // Assign the bullet prefab here
@@ -141,5 +142,10 @@ public class Enemy : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, roamRange);
+    }
+    private void OnDestroy() {
+        if (resource != null) {
+            Instantiate(resource, transform.position, Quaternion.identity);
+        }
     }
 }

@@ -38,6 +38,45 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void TakeHealth()
+    {
+        Debug.Log("Player has picked up health!");
+        // Increase the player's health
+        currentHealth = maxHealth; // Restore to max health
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        UpdateHealthUI();
+
+        // Access the ShootController on AR_A inside PlayerCameraRoot
+        Transform playerCameraRoot = transform.Find("PlayerCameraRoot");
+        if (playerCameraRoot != null)
+        {
+            Transform arATransform = playerCameraRoot.Find("AR_A");
+            if (arATransform != null)
+            {
+                ShootController shootController = arATransform.GetComponent<ShootController>();
+                if (shootController != null)
+                {
+                    shootController.AddAmmo();
+                }
+                else
+                {
+                    Debug.LogWarning("ShootController component not found on AR_A!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("AR_A object not found under PlayerCameraRoot!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("PlayerCameraRoot object not found!");
+        }
+    }
+
     private void Die()
     {
         Debug.Log("Player has died!");

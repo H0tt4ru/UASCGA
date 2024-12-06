@@ -31,12 +31,12 @@ public class ShootController : MonoBehaviour
     public TextMeshProUGUI AmmoText;
     public TextMeshProUGUI ReserveAmmoText;
 
-    private Animator Animator;
+    // private Animator Animator;
     private float LastShootTime;
 
     private void Awake()
     {
-        Animator = GetComponent<Animator>();
+        // Animator = GetComponent<Animator>();
         ShootingSystem = transform.Find("MuzzleFlash01").GetComponent<ParticleSystem>();
         UpdateAmmoUI();
     }
@@ -53,6 +53,13 @@ public class ShootController : MonoBehaviour
         }
     }
 
+    public void AddAmmo()
+    {
+        Debug.Log("Player has picked up ammo!");
+        ReserveAmmo = 90;
+        UpdateAmmoUI();
+    }
+
     private void Shoot()
     {
         if (Ammo <= 0) {
@@ -62,13 +69,12 @@ public class ShootController : MonoBehaviour
 
         ShootingSystem.Play();
         if (LastShootTime + ShootDelay < Time.time) {
-            Animator.SetBool("IsShooting", true);
+            // Animator.SetBool("IsShooting", true);
             Vector3 direction = GetDirection();
         
             if (Physics.Raycast(BulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, Mask)) {
                 TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
-                Debug.Log(hit.transform.name);
                 Enemy enemy = hit.transform.GetComponent<Enemy>();
 
                 if (enemy != null)
@@ -112,7 +118,7 @@ public class ShootController : MonoBehaviour
             yield return null;
         }
 
-        Animator.SetBool("IsShooting", false);
+        // Animator.SetBool("IsShooting", false);
         trail.transform.position = hitPoint;
         if (madeImpact) {
             Instantiate(ImpactParticleSystem, hitPoint, Quaternion.LookRotation(hitNormal));
@@ -128,7 +134,7 @@ public class ShootController : MonoBehaviour
         }
 
         Reloading = true;
-        Animator.SetBool("IsReloading", true);
+        // Animator.SetBool("IsReloading", true);
         yield return new WaitForSeconds(ReloadTime);
 
         int ammoToReload = MaxAmmo - Ammo;
@@ -141,7 +147,7 @@ public class ShootController : MonoBehaviour
         }
 
         Reloading = false;
-        Animator.SetBool("IsReloading", false);
+        // Animator.SetBool("IsReloading", false);
         UpdateAmmoUI();
     }
 

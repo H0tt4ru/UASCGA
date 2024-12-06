@@ -192,6 +192,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 50339936}
   shootingInterval: 0.5
@@ -475,6 +476,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 204351967}
   shootingInterval: 0.5
@@ -1679,6 +1681,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 1246120291}
   shootingInterval: 0.5
@@ -2310,6 +2313,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 68010549}
   shootingInterval: 0.5
@@ -2980,7 +2984,7 @@ Transform:
   m_GameObject: {fileID: 1717930510}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.540419, y: -35.123577, z: 71.21666}
+  m_LocalPosition: {x: -23, y: -35.123577, z: 71.21666}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3070,6 +3074,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 291859150}
   shootingInterval: 0.5
@@ -3690,6 +3695,7 @@ MonoBehaviour:
   player: {fileID: 135756641613574976}
   detectionRange: 10
   roamRange: 15
+  resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
   shootingPoint: {fileID: 2001706396}
   shootingInterval: 0.5
