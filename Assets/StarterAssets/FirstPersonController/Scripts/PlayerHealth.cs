@@ -90,12 +90,11 @@ public class PlayerHealth : MonoBehaviour
         // Example: GetComponent<PlayerMovement>().enabled = false;
 
         // Optionally restart the game or load a specific scene after a delay
-        StartCoroutine(RestartGame(3f));
+        RestartGame();
     }
 
-    private IEnumerator RestartGame(float delay)
+    private void RestartGame()
     {
-        yield return new WaitForSeconds(delay);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 }
