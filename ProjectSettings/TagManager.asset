@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Land
+  - Resource
   layers:
   - Default
   - TransparentFX

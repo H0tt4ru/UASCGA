@@ -37,30 +37,48 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         SetRandomRoamTarget();
+       
 
-        // Attach the weapon to the right hand if the weapon and right hand target are assigned
-        if (rightHandTarget != null && weapon != null && rightHandWeaponAttachment != null)
+        if (weapon != null && rightHandWeaponAttachment != null)
         {
-            // Position the weapon at the specified attachment point (e.g., grip)
-            weapon.transform.position = rightHandWeaponAttachment.position;
-            weapon.transform.rotation = rightHandWeaponAttachment.rotation;
-
-            // Attach the weapon to the right hand
-            weapon.transform.parent = rightHandTarget;
+            // Instantiate the weapon and attach it to the right hand attachment
+            GameObject weaponInstance = Instantiate(weapon, rightHandWeaponAttachment);
+            weaponInstance.transform.localPosition = Vector3.zero;
+            weaponInstance.transform.localRotation = Quaternion.identity;
         }
+           if (rightHandTarget != null && weapon != null && rightHandWeaponAttachment != null)
+    {
+        // Instantiate the weapon and attach it to the right hand attachment
+        GameObject weaponInstance = Instantiate(weapon, rightHandWeaponAttachment);
+        weaponInstance.transform.localPosition = Vector3.zero;
+        
+        // Correct the rotation if the weapon is pointing down
+        // Adjust this based on your weapon model's original orientation
+        weaponInstance.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); // Adjust if necessary
+
+        // Ensure the weapon faces forward (correct orientation)
+        weaponInstance.transform.rotation = rightHandWeaponAttachment.rotation * Quaternion.Euler(90f, 0f, 0f); // Rotate by 90 degrees on the X axis
+
+        // Attach the weapon to the right hand (position and orientation adjusted)
+        weaponInstance.transform.parent = rightHandTarget;
+
+        // Optional: Adjust the hand position slightly for the correct grip
+        Vector3 gripOffset = rightHandTarget.position - weaponInstance.transform.position;
+        weaponInstance.transform.position += gripOffset;
+    }
     }
 
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
-        {
-            if (hit.collider.CompareTag("Land"))
-            {
-                // Posisi objek disesuaikan dengan tanah
-                transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
-            }
-        }
+        // if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        // {
+        //     if (hit.collider.CompareTag("Land"))
+        //     {
+        //         // Posisi objek disesuaikan dengan tanah
+        //         transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+        //     }
+        // }
 
         if (agent != null && agent.enabled)
         {
@@ -83,7 +101,16 @@ public class Enemy : MonoBehaviour
             {
                 SetRandomRoamTarget();
             }
-        }
+
+             if (rightHandTarget != null && weapon != null)
+    {
+        weapon.transform.position = rightHandTarget.position;
+       
+    }
+    }
+        
+
+        
     }
 
     private IEnumerator ShootAtPlayer()
@@ -151,7 +178,7 @@ public class Enemy : MonoBehaviour
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.isKinematic = false;
+            
                 rb.AddForce(hitDirection.normalized * knockbackForce, ForceMode.Impulse);
             }
 
@@ -195,12 +222,70 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, roamRange);
     }
-
-    private void OnDestroy()
+    void OnAnimatorIK(int layerIndex)
     {
-        if (resource != null)
+        if (ikActive) // Ensure IK is active
         {
-            Instantiate(resource, transform.position, Quaternion.identity);
+            // Setting the right hand target position and rotation using IK
+            if (rightHandTarget != null)
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1); // Set position weight
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1); // Set rotation weight
+                animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandTarget.position); // Target right hand position
+                animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandTarget.rotation); // Target right hand rotation
+            }
+
+            // Setting the left hand target position and rotation using IK
+            if (leftHandTarget != null)
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1); // Set position weight
+                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1); // Set rotation weight
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandTarget.position); // Target left hand position
+                animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandTarget.rotation); // Target left hand rotation
+            }
         }
     }
+
+
+    // private void OnDestroy()
+    // {
+    //     if (resource != null)
+    //     {
+    //         Instantiate(resource, transform.position, Quaternion.identity);
+    //     }
+    // }
+
+    // void OnDisable()
+    // {
+    //     GameObject[] resources = GameObject.FindGameObjectsWithTag("Resource");
+    //     foreach (GameObject obj in resources)
+    //     {
+    //         Destroy(obj);
+    //     }
+    // }
+
+    private void OnDestroy()
+{
+    if (resource != null)
+    {
+        // Buat resource di posisi musuh yang dihancurkan
+        GameObject instantiatedResource = Instantiate(resource, transform.position, Quaternion.identity);
+
+        // Beri nama dan tag untuk identifikasi
+        instantiatedResource.name = "Resource_Clone";
+        instantiatedResource.tag = "Resource";
+    }
+}
+
+private void OnDisable()
+{
+    // Pastikan semua objek resource dihancurkan sebelum meninggalkan scene
+    GameObject[] resources = GameObject.FindGameObjectsWithTag("Resource");
+    foreach (GameObject obj in resources)
+    {
+        Destroy(obj);
+    }
+}
+
+
 }
