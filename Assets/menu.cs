@@ -25,6 +25,12 @@ public class menu : MonoBehaviour
         SceneManager.LoadScene(TestScene);
     }
 
+//     private IEnumerator LoadSceneWithDelay(string SampleScene){
+//     // Tambahkan efek transisi atau delay jika perlu
+//     yield return new WaitForSeconds(1f); // Delay 1 detik
+//     SceneManager.LoadScene(SampleScene);
+// }
+
     public void InfoButton(){
         MenuPanel.SetActive(false);
         InfoPanel.SetActive(true);
@@ -38,5 +44,8 @@ public class menu : MonoBehaviour
     public void KeluarButton(){
         Application.Quit();
         Debug.Log("Keluar");
+    }
+    public void sound_volume(float volume){
+        PlayerPrefs.SetFloat("volume", volume);
     }
 }

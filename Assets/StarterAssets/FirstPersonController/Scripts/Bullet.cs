@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Bullet : MonoBehaviour
 {
@@ -6,8 +8,11 @@ public class Bullet : MonoBehaviour
 
 void Start()
 {
-    Destroy(gameObject, lifetime);
-    Debug.Log("Bullet spawned!");
+    if (SceneManager.GetActiveScene().name == "SampleScene") {
+        Destroy(gameObject, lifetime);
+        Debug.Log("Bullet spawned!");
+    }
+    
 }
 
 
