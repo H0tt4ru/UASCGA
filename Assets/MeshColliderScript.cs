@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class MeshColliderScript : MonoBehaviour
 {
@@ -8,16 +10,19 @@ public class MeshColliderScript : MonoBehaviour
 
     void Start()
     {
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-        foreach (GameObject obj in allObjects)
+        if (SceneManager.GetActiveScene().name == "SampleScene")
         {
-            if(obj.GetComponent<MeshRenderer>() != null && obj.GetComponent<MeshCollider>() == null)
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
+            foreach (GameObject obj in allObjects)
             {
-                obj.AddComponent<MeshCollider>();
+                if(obj.GetComponent<MeshRenderer>() != null && obj.GetComponent<MeshCollider>() == null)
+                {
+                    obj.AddComponent<MeshCollider>();
+                }
             }
-        }
 
-        Debug.Log("Mesh Colliders added to all objects with Mesh Renderer");
+            Debug.Log("Mesh Colliders added to all objects with Mesh Renderer");
+        }
     }
 
     // Update is called once per frame

@@ -213,7 +213,7 @@ namespace StarterAssets
 					_verticalVelocity = -2f;
 				}
 
-				// Jump
+				// Jump - comment by pak Wira
 				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
@@ -225,6 +225,10 @@ namespace StarterAssets
 				{
 					_jumpTimeoutDelta -= Time.deltaTime;
 				}
+
+				//if(_input.jump) {
+					//this.GetComponent<Rigidbody>().AddForce(Vector3.up * 500f);
+				//}
 			}
 			else
 			{
