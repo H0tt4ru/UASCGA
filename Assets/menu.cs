@@ -21,8 +21,8 @@ public class menu : MonoBehaviour
         
     }
 
-    public void StartButton(string TestScene){
-        SceneManager.LoadScene(TestScene);
+    public void StartButton(string SampleScene){
+        SceneManager.LoadScene(SampleScene);
     }
 
 //     private IEnumerator LoadSceneWithDelay(string SampleScene){
