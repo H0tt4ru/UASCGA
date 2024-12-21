@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     public Transform shootingPoint; // Where bullets will spawn
     public float shootingInterval = 2f; // Time between shots
     public float bulletSpeed = 10f;
+    public AudioClip shootClip;
 
     private bool isShooting = false;
 
@@ -137,6 +138,11 @@ public class Enemy : MonoBehaviour
 
             // Destroy the bullet after 5 seconds to prevent clutter
             Destroy(bullet, 5f);
+
+            if (shootClip != null)
+        {
+            AudioSource.PlayClipAtPoint(shootClip, transform.position);
+        }
         }
 
         yield return new WaitForSeconds(shootingInterval); // Wait for the interval before shooting again

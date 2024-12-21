@@ -10,15 +10,30 @@ public class PlayerHealth : MonoBehaviour
     public Text healthText; // Reference to a UI Text element to display health
     public GameObject gameOverScreen; // Reference to a Game Over UI panel
 
+    public AudioClip damageClip; // Audio clip to play when taking damage
+    private AudioSource audioSource; // AudioSource component
+
     void Start()
     {
         currentHealth = maxHealth; // Initialize player's health
         UpdateHealthUI();
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        if (damageClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(damageClip);
+        }
+        
         UpdateHealthUI();
 
         // Check if the player's health reaches zero
