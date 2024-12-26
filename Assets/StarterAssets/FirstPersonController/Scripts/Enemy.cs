@@ -81,33 +81,42 @@ public class Enemy : MonoBehaviour
         //     }
         // }
 
-        if (agent != null && agent.enabled)
-        {
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-            // Set animator parameter when player is near
-            if (distanceToPlayer <= detectionRange)
-            {
-               
-                agent.SetDestination(player.position);
-
-                if (!isShooting)
-                {
-                    StartCoroutine(ShootAtPlayer());
-                }
-            }
-           
-
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
-            {
-                SetRandomRoamTarget();
-            }
-
-             if (rightHandTarget != null && weapon != null)
+         if (agent != null && agent.enabled)
     {
-        weapon.transform.position = rightHandTarget.position;
-       
-    }
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        // If the player is within detection range but not too close
+        if (distanceToPlayer <= detectionRange && distanceToPlayer > 3f)
+        {
+            agent.SetDestination(player.position);
+
+            if (!isShooting)
+            {
+                StartCoroutine(ShootAtPlayer());
+            }
+        }
+        else if (distanceToPlayer <= 3f)
+        {
+            // Stop the agent from getting closer than 3 meters
+            agent.ResetPath();
+
+            if (!isShooting)
+            {
+                StartCoroutine(ShootAtPlayer());
+            }
+        }
+
+        // Roaming behavior when the player is not in detection range
+        if (distanceToPlayer > detectionRange && !agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            SetRandomRoamTarget();
+        }
+
+        // Align weapon position
+        if (rightHandTarget != null && weapon != null)
+        {
+            weapon.transform.position = rightHandTarget.position;
+        }
     }
         
 
@@ -115,44 +124,47 @@ public class Enemy : MonoBehaviour
     }
 
     private IEnumerator ShootAtPlayer()
-    {   
-      
-        isShooting = true;
-        if (animator != null)
+{
+    isShooting = true;
+    if (animator != null)
+    {
+        animator.SetBool("isShoot", true);
+    }
+
+    if (bulletPrefab != null && shootingPoint != null)
+    {
+        // Spawn the bullet at the shooting point
+        GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
+
+        // Apply force to move the bullet toward the player
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            animator.SetBool("isShoot", true);
+            Vector3 targetPoint = player.position + new Vector3(0, 1.5f, 0); // Adjust height
+            Vector3 direction = (targetPoint - shootingPoint.position).normalized;
+
+            rb.velocity = direction * bulletSpeed; // Propel the bullet
+            rb.useGravity = false; // Ensure no gravity affects the bullet
         }
 
-        if (bulletPrefab != null && shootingPoint != null)
-        {
-            // Spawn the bullet at the shooting point
-            GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
+        // Destroy the bullet after 5 seconds to prevent clutter
+        Destroy(bullet, 5f);
 
-            // Apply force to move the bullet toward the player
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                Vector3 direction = (player.position - shootingPoint.position).normalized; // Calculate direction
-                rb.velocity = direction * bulletSpeed; // Propel the bullet
-            }
-
-            // Destroy the bullet after 5 seconds to prevent clutter
-            Destroy(bullet, 5f);
-
-            if (shootClip != null)
+        if (shootClip != null)
         {
             AudioSource.PlayClipAtPoint(shootClip, transform.position);
         }
-        }
-
-        yield return new WaitForSeconds(shootingInterval); // Wait for the interval before shooting again
-     
-        isShooting = false;
-        if (animator != null)
-        {
-            animator.SetBool("isShoot", false);
-        }
     }
+
+    yield return new WaitForSeconds(shootingInterval); // Wait for the interval before shooting again
+
+    isShooting = false;
+    if (animator != null)
+    {
+        animator.SetBool("isShoot", false);
+    }
+}
+
 
     public void OnHit(Vector3 hitPoint, Vector3 hitDirection)
     {
