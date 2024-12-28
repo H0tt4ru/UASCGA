@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; // For displaying health on the UI
 
 public class PlayerHealth : MonoBehaviour
@@ -90,11 +91,18 @@ public class PlayerHealth : MonoBehaviour
         // Example: GetComponent<PlayerMovement>().enabled = false;
 
         // Optionally restart the game or load a specific scene after a delay
-        RestartGame();
+
+        
+        Over("GameOver");
+    }
+    public void Over(string GameOver){
+        SceneManager.LoadScene(GameOver);
     }
 
     private void RestartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        
+
+        // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 }
