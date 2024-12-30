@@ -124,14 +124,14 @@ public class Sound : MonoBehaviour
 
     void PlayShootingSound()
     {
-        float currentTime = Time.time;
+        // float currentTime = Time.time;
 
-        // Check if enough time has passed since the last shot
-        if (currentTime - lastShootTime >= shootInterval)
-        {
-            audioSource.PlayOneShot(shootClip); // Play the shooting sound immediately
-            lastShootTime = currentTime;       // Update the last shot time
-        }
+        // // Check if enough time has passed since the last shot
+        // if (currentTime - lastShootTime >= shootInterval)
+        // {
+        //     audioSource.PlayOneShot(shootClip); // Play the shooting sound immediately
+        //     lastShootTime = currentTime;       // Update the last shot time
+        // }
     }
 
     void StopSound()

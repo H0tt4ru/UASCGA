@@ -291,12 +291,9 @@ public class Enemy : MonoBehaviour
 {
     if (resource != null)
     {
+        Vector3 new_transform_position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         // Buat resource di posisi musuh yang dihancurkan
-        GameObject instantiatedResource = Instantiate(resource, transform.position, Quaternion.identity);
-
-        // Beri nama dan tag untuk identifikasi
-        instantiatedResource.name = "Resource_Clone";
-        instantiatedResource.tag = "Resource";
+        GameObject instantiatedResource = Instantiate(resource, new_transform_position, Quaternion.identity);
     }
 }
 

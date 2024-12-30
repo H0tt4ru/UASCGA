@@ -27,15 +27,21 @@ public class ShootController : MonoBehaviour
     private int MaxAmmo = 30;
     private int ReserveAmmo = 90;
     private bool Reloading = false;
-    private float ReloadTime = 1.5f;
+    private float ReloadTime = 1f;
     public TextMeshProUGUI AmmoText;
     public TextMeshProUGUI ReserveAmmoText;
+    public TextMeshProUGUI reloadingText;
+    public AudioClip shootClip;
+    public AudioClip reloadingClip;
+    private AudioSource audioSource;
 
     // private Animator Animator;
     private float LastShootTime;
 
     private void Awake()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        reloadingText.gameObject.SetActive(false);
         // Animator = GetComponent<Animator>();
         ShootingSystem = transform.Find("MuzzleFlash01").GetComponent<ParticleSystem>();
         UpdateAmmoUI();
@@ -71,6 +77,7 @@ public class ShootController : MonoBehaviour
         if (LastShootTime + ShootDelay < Time.time) {
             // Animator.SetBool("IsShooting", true);
             Vector3 direction = GetDirection();
+            audioSource.PlayOneShot(shootClip);
         
             if (Physics.Raycast(BulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, Mask)) {
                 TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
@@ -135,7 +142,20 @@ public class ShootController : MonoBehaviour
 
         Reloading = true;
         // Animator.SetBool("IsReloading", true);
+        audioSource.PlayOneShot(reloadingClip);
+
+        audioSource.clip = reloadingClip;
+        audioSource.time = 0f;
+        audioSource.Play();
+        reloadingText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+        audioSource.Stop();
+
         yield return new WaitForSeconds(ReloadTime);
+        audioSource.time = 0.1f;
+        audioSource.Play();
+        reloadingText.gameObject.SetActive(false);
 
         int ammoToReload = MaxAmmo - Ammo;
         if (ReserveAmmo >= ammoToReload) {
@@ -148,6 +168,7 @@ public class ShootController : MonoBehaviour
 
         Reloading = false;
         // Animator.SetBool("IsReloading", false);
+        
         UpdateAmmoUI();
     }
 
