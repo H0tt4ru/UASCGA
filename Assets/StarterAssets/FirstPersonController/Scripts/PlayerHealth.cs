@@ -110,9 +110,17 @@ public class PlayerHealth : MonoBehaviour
         
         Over("GameOver");
     }
-    public void Over(string GameOver){
+    public void Over(string GameOver)
+    {
+       Component[] components = FindObjectsOfType<Component>();
+        foreach (Component component in components)
+        {
+            Destroy(component);
+        }
+        // Load the Game Over scene
         SceneManager.LoadScene(GameOver);
     }
+    
 
     private void RestartGame()
     {

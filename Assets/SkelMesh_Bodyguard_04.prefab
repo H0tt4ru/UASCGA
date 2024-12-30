@@ -375,7 +375,7 @@ MonoBehaviour:
   knockbackForce: 0
   health: 100
   player: {fileID: 0}
-  detectionRange: 10
+  detectionRange: 8
   roamRange: 15
   resource: {fileID: 343604158354139918, guid: 4c3a177c7f10dbd42aa8a22aabbba631, type: 3}
   bulletPrefab: {fileID: 8310767704183246444, guid: 463cb250ad9bb4943a0b7ac5e1a48865, type: 3}
