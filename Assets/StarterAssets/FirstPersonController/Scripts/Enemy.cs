@@ -39,6 +39,11 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         SetRandomRoamTarget();
        
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+
 
         if (weapon != null && rightHandWeaponAttachment != null)
         {
