@@ -23,7 +23,7 @@ public class BotSpawner : MonoBehaviour
         timeElapsed += Time.deltaTime;
 
         // Every minute, decrease the spawn rate
-        if (timeElapsed >= 60f)
+        if (timeElapsed >= 10f)
         {
             timeElapsed = 0f;  // Reset the timer every minute
             DecreaseSpawnRate();
@@ -41,13 +41,18 @@ public class BotSpawner : MonoBehaviour
     }
 
     // Spawn a bot at the spawner's position
+
     void SpawnBot()
     {
-        // Instantiate the bot at the spawner's position and rotation
-        Instantiate(botPrefab, transform.position, transform.rotation);
+        // Generate a random position within a radius
+        Vector3 randomPosition = transform.position + Random.insideUnitSphere * 50f;
+        randomPosition.y = transform.position.y;  // Keep the same height
+
+        // Instantiate the bot at the random position and spawner's rotation
+        Instantiate(botPrefab, randomPosition, transform.rotation);
 
         // Log that a new bot has spawned
-        Debug.Log("New bot spawned at: " + transform.position);
+        Debug.Log("New bot spawned at: " + randomPosition);
     }
 
     // Decrease spawn rate
