@@ -156,4 +156,23 @@ public class ShootController : MonoBehaviour
         AmmoText.text = Ammo.ToString();
         ReserveAmmoText.text = ReserveAmmo.ToString();
     }
+    void Start()
+    {
+        CursorManager.HideCursor();
+    }
+public class CursorManager : MonoBehaviour
+{
+    public static void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public static void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+}
+
 }
